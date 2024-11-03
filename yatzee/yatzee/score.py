@@ -63,10 +63,16 @@ def calculate_possible_scores(dice: list, score_sheet: dict) -> dict:
 
     # Villa
     if score_sheet['Villa'] is None:
-        pair=[]
-        for i in range(6, 0, -1):
-            if dice_counts[i-1] >= 3:
-                possible_scores['Villa'] = sum(pair) * 3
+        # filter dice_counts where 3
+        pairs = []
+        for i in dice_counts:
+            if i == 3:
+                pairs.append(i)
+        if len(pairs) >=2:
+            possible_scores['Villa'] = sum(dice)
+
+
+
 
 
     # Four of a Kind
@@ -105,7 +111,10 @@ def calculate_possible_scores(dice: list, score_sheet: dict) -> dict:
     if score_sheet['Full House'] is None:
         sorted_counts = sorted(dice_counts, reverse=True)
         if sorted_counts[0] == 3 and sorted_counts[1] == 2:
-            possible_scores['Full House'] = sum(dice)
+            res = sorted(dice)
+            res.pop(0)
+            possible_scores['Full House'] = sum(res)
+
 
     # Chance
     if score_sheet['Chance'] is None:
